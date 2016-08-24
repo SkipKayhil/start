@@ -6,112 +6,113 @@ var greets = [ 'Hello', 'Howdy', 'Yo', 'Sup', 'Wazzup', 'Salutations', 'Hey', 'H
 
 // Finds current time and date, formats it properly
 function startTime() {
-	var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-	var dayNames = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
-	var now = new Date();
-	var hour = now.getHours();
-	var mins = now.getMinutes();
-	var secs = now.getSeconds();
-	var ampm = hour >= 12 ? 'PM' : 'AM';
-	var date = now.getDate();
-	var day  = dayNames[now.getDay()];
-	var month = monthNames[now.getMonth()];
-	var year = now.getFullYear();
-	hour = hour % 12;
-  	hour = hour ? hour : 12;
-	mins = mins < 10 ? '0' + mins : mins;
-	secs = secs < 10 ? '0' + secs : secs;
-	var timeString = hour + ':' + mins + ':' + secs + ' ' + ampm;
-	var dateString = day + ' ' + month + ' ' + date + ', ' + year;
-	document.getElementById('time').innerHTML = timeString;
-	document.getElementById('date').innerHTML = dateString;
-	var t = setTimeout(startTime, 500);
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var dayNames = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
+    var now = new Date();
+    var hour = now.getHours();
+    var mins = now.getMinutes();
+    var secs = now.getSeconds();
+    var ampm = hour >= 12 ? 'PM' : 'AM';
+    var date = now.getDate();
+    var day  = dayNames[now.getDay()];
+    var month = monthNames[now.getMonth()];
+    var year = now.getFullYear();
+    hour = hour % 12;
+      hour = hour ? hour : 12;
+    mins = mins < 10 ? '0' + mins : mins;
+    secs = secs < 10 ? '0' + secs : secs;
+    var timeString = hour + ':' + mins + ':' + secs + ' ' + ampm;
+    var dateString = day + ' ' + month + ' ' + date + ', ' + year;
+    document.getElementById('time').innerHTML = timeString;
+    document.getElementById('date').innerHTML = dateString;
+    var t = setTimeout(startTime, 500);
 }
 
 
 
 // Gets weather for requested location, appends to page
 function getWeather(location) {
-	$.simpleWeather({
-		location: location,
-		success: function(weather) {
-			$('.weather').html('In ' + weather.city + ', ' + weather.region + ', the weather is ' + weather.currently + ', the temperature is ' + weather.temp + '&deg;, and the wind is ' + weather.wind.speed + weather.units.speed + ' <span class="no-transform">' + weather.wind.direction + '</span>');
-			$('.weatherlink').html('<a href="' + weather.link + '">More details (w)</a>');
-		},
-		error: function(error)   {
-			$('.weather').html('Sorry, there has been a problem retrieving the weather information.');
-		}
-	});
+    $.simpleWeather({
+        location: location,
+        success: function(weather) {
+            $('.weather').html('In ' + weather.city + ', ' + weather.region + ', the weather is ' + weather.currently + ', the temperature is ' + weather.temp + '&deg;, and the wind is ' + weather.wind.speed + weather.units.speed + ' <span class="no-transform">' + weather.wind.direction + '</span>');
+            $('.weatherlink').html('<a href="' + weather.link + '">More details (w)</a>');
+        },
+        error: function(error)   {
+            $('.weather').html('Sorry, there has been a problem retrieving the weather information.');
+        }
+    });
 }
 
 
 
 // Master loading function; appends random greeting, quote, and weather
 function loadStuff() {
-	var randNum = Math.floor((Math.random() * greets.length));
-	$('.greeting').html(greets[randNum]);
-	$('.quote').html('&ldquo;' + quotes[randNum] + '&rdquo; &mdash; ' + '<cite><small>' + quoted[randNum] + '</small></cite>');
-	// Geolocates the user, otherwise defaulting to Pittsburgh (2473224)
-	if('geolocation' in navigator) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-	    	getWeather(position.coords.latitude + ',' + position.coords.longitude);
-	  	}, getWeather(2473224), {timeout: 5000});
-	} else { getWeather(2473224); }
+    var randNum = Math.floor((Math.random() * greets.length));
+    $('.greeting').html(greets[randNum]);
+    $('.quote').html('&ldquo;' + quotes[randNum] + '&rdquo; &mdash; ' + '<cite><small>' + quoted[randNum] + '</small></cite>');
+    // Geolocates the user, otherwise defaulting to Pittsburgh (2473224)
+    //Going to remove all the weather stuff eventually, but for now just commenting this out
+    /*if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            getWeather(position.coords.latitude + ',' + position.coords.longitude);
+          }, getWeather(2473224), {timeout: 5000});
+    } else { getWeather(2473224); }*/
 }
 
 
 
 // Initializes keyboard nav
 function bindMousetraps() {
-	$.each($('.parent'), function(i, val) {
-		Mousetrap.bind($(val).children('span').text(), function(e) {
-			$('a#' + $(val).attr('id')).toggleClass('active').next().slideToggle(150);
-			$.each($(val).parent().find('.tab span'), function(i, val) {
-				Mousetrap.bind($(val).text(), function(e) {
-					window.location.href = $(val).parent().attr('href');
-				});
-			});
-			Mousetrap.bind($(val).children('span').text(), function(e) {
-				resetMousetraps();
-			});
-		});
-	});
-	// Resets on ESC or spacebar
-	Mousetrap.bind(['esc', 'space'], function(e) {
-		resetMousetraps();
-	});
-	// Binds Weather and GitHub links
-	Mousetrap.bind('w', function(e) {
-		window.location.href = $('.weatherlink').children().attr('href');
-	});
-	Mousetrap.bind('g', function(e) {
-		window.location.href = $('.github').children().attr('href');
-	});
+    $.each($('.parent'), function(i, val) {
+        Mousetrap.bind($(val).children('span').text(), function(e) {
+            $('a#' + $(val).attr('id')).toggleClass('active').next().slideToggle(150);
+            $.each($(val).parent().find('.tab span'), function(i, val) {
+                Mousetrap.bind($(val).text(), function(e) {
+                    window.location.href = $(val).parent().attr('href');
+                });
+            });
+            Mousetrap.bind($(val).children('span').text(), function(e) {
+                resetMousetraps();
+            });
+        });
+    });
+    // Resets on ESC or spacebar
+    Mousetrap.bind(['esc', 'space'], function(e) {
+        resetMousetraps();
+    });
+    // Binds Weather and GitHub links
+    Mousetrap.bind('w', function(e) {
+        window.location.href = $('.weatherlink').children().attr('href');
+    });
+    Mousetrap.bind('g', function(e) {
+        window.location.href = $('.github').children().attr('href');
+    });
 }
 
 
 
 // Closes cells, rebinds keyboard shortcuts
 function resetMousetraps() {
-	$('.subMenu').slideUp(150);
-	$('li a').removeClass('active');
-	Mousetrap.reset();
-	bindMousetraps();
+    $('.subMenu').slideUp(150);
+    $('li a').removeClass('active');
+    Mousetrap.reset();
+    bindMousetraps();
 }
 
 
 
 // Initializes everything on page load
 $(function() {
-	startTime();
-	loadStuff();
-	bindMousetraps();
-	// Binds click events for opening tabs and background click to close
-	$('li a.parent').click(function() {
-		$(this).parent('li').find('ul').slideToggle(150);
-		$(this).toggleClass('active');
-	});
-	$('#background').click(function() {
-		resetMousetraps();
-	});
+    startTime();
+    loadStuff();
+    bindMousetraps();
+    // Binds click events for opening tabs and background click to close
+    $('li a.parent').click(function() {
+        $(this).parent('li').find('ul').slideToggle(150);
+        $(this).toggleClass('active');
+    });
+    $('#background').click(function() {
+        resetMousetraps();
+    });
 });
