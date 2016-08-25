@@ -19,13 +19,24 @@ div#background {
 div.centerWrapper {
     transform: translateY(-50%);
     position: absolute;
-    width: 40%;
-    left: 30%;
+    width: 60%;
+    left: 20%;
     top: 50%;
 }
+.box {
+    width: 60%;
+    justify-content: center;
+}
 div.timeDate {
-    font-size: xx-large;
+    /*-size: xx-large;*/
+    align-content: center;
+    width: auto;
+    text-align: center;
     padding: 0 15px 2.5rem;
+}
+div#time {
+    font-size: 10em;
+    font-family: 'HelveticaNeue-Ultralight', 'Helvetica Neue Ultralight', 'Helvetica Neue', 'Open-Light', sans-serif;
 }
 ul {
     list-style: none;
@@ -76,6 +87,7 @@ p a:hover { text-decoration: underline; }
 .clear { clear: both; }
 .left  { float: left; }
 .right { float: right; }
+.text-center { text-align: center; }
 .text-right { text-align: right; }
 .light-text { color: rgba(255, 255, 255, 0.7); }
 div.right, div.left { width: 50%; }

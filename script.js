@@ -6,8 +6,8 @@ var greets = [ 'Hello', 'Howdy', 'Yo', 'Sup', 'Wazzup', 'Salutations', 'Hey', 'H
 
 // Finds current time and date, formats it properly
 function startTime() {
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    var dayNames = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var now = new Date();
     var hour = now.getHours();
     var mins = now.getMinutes();
@@ -18,11 +18,12 @@ function startTime() {
     var month = monthNames[now.getMonth()];
     var year = now.getFullYear();
     hour = hour % 12;
-      hour = hour ? hour : 12;
+    hour = hour ? hour : 12;
+    hour = hour < 10 ? '0' + hour : hour;
     mins = mins < 10 ? '0' + mins : mins;
     secs = secs < 10 ? '0' + secs : secs;
-    var timeString = hour + ':' + mins + ':' + secs + ' ' + ampm;
-    var dateString = day + ' ' + month + ' ' + date + ', ' + year;
+    var timeString = hour + ' ' + mins + ' ' + secs;
+    var dateString = day + ', ' + month + ' ' + date;
     document.getElementById('time').innerHTML = timeString;
     document.getElementById('date').innerHTML = dateString;
     var t = setTimeout(startTime, 500);
@@ -82,12 +83,12 @@ function bindMousetraps() {
         resetMousetraps();
     });
     // Binds Weather and GitHub links
-    Mousetrap.bind('w', function(e) {
+    /*Mousetrap.bind('w', function(e) {
         window.location.href = $('.weatherlink').children().attr('href');
-    });
-    Mousetrap.bind('g', function(e) {
+    });*/
+    /*Mousetrap.bind('g', function(e) {
         window.location.href = $('.github').children().attr('href');
-    });
+    });*/
 }
 
 
